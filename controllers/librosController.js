@@ -1,4 +1,6 @@
 import Libros from '../models/Libros.js'
+import Estrellas from '../models/Estrellas.js'
+import Comentarios from '../models/Comentarios.js'
 
 const agregarLibro = async (req, res) => {
     try {
@@ -38,15 +40,13 @@ const obtenerLibro = async (req, res) => {
 
 // Obtener libro por id, traer sus comentarios y estrellas
 const obtenerLibroId = async (req, res) => {
-    // Se trae el nombre del libro de la url
-    const { nombre } = req.params;
+    // Se trae el id del libro de la url
+    const { id } = req.params;
 
     try {
-        // Se usa una regex para permitir mayusculas o minisuclas 
-        const regex = new RegExp(nombre, 'i');
 
-        // Se hace la consulta a base del regex
-        const libroExiste = await Libros.findOne({ nombre: regex })
+        // Se hace la consulta 
+        const libroExiste = await Libros.findById(id)
             .select('_id nombre saga autor sinopsis precio imagen tipo');
 
         // Si no encontro el libro
@@ -55,11 +55,10 @@ const obtenerLibroId = async (req, res) => {
             return res.status(404).json({ msg: error.message });
         }
 
-        // Si lo encontro
-        res.json(libroExiste)
+        res.json(libroExiste);
     } catch (error) {
         console.log(error)
-        return res.status(500).json({ msg: "Error en el servidor" });
+        return res.status(500).json({ msg: "Libro no encontrado" });
     }
 }
 
