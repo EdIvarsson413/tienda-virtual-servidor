@@ -40,6 +40,6 @@ const librosSchema = mongoose.Schema(
     }
 )
 
-const Libros = mongoose.model("Libros", librosSchema);
+const Libros = mongoose.model( "Libros", librosSchema );
 
 export default Libros

@@ -20,6 +20,6 @@ const comentariosSchema = mongoose.Schema(
     }
 )
 
-const Comentarios = mongoose.model("Comentarios", comentariosSchema);
+const Comentarios = mongoose.model( "Comentarios", comentariosSchema );
 
 export default Comentarios;

@@ -14,20 +14,20 @@ import checkAdminRole from '../middleware/checkRole.js';
 const router = express.Router();
 
 // Obtener todos los libros
-router.get('/', obtenerLibros)
+router.get( '/', obtenerLibros )
 
 // Obtener libro en el campod de texto
-router.get('/:nombre', obtenerLibro)
+router.get( '/:nombre', obtenerLibro )
 
 // Obtener libro por id
-router.get('/id/:id', obtenerLibroId);
+router.get( '/id/:id', obtenerLibroId );
 
 // Para agregar libro
-router.post("/", checkAuth, checkAdminRole, agregarLibro);
+router.post( "/", checkAuth, checkAdminRole, agregarLibro );
 
-// Toda operacion con id puede tener todas las acciones de HTTP juntas
-router.route("/:id")
-    .put( checkAuth, checkAdminRole, editarLibro)
-    .delete( checkAuth, checkAdminRole, eliminarLibro);
+// Cualquier operacion con la informacion de un libro requiere acceso autorizado
+router.route( "/:id" )
+    .put( checkAuth, checkAdminRole, editarLibro )
+    .delete( checkAuth, checkAdminRole, eliminarLibro );
 
 export default router

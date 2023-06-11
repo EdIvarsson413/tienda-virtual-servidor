@@ -4,9 +4,9 @@ import { agregarEstrellas, obtenerEstrellas } from '../controllers/estrellasCont
 const router = express.Router();
 
 // Ruta GET para obtener todas las estrellas
-router.get('/:libro', obtenerEstrellas);
+router.get( '/:libro', obtenerEstrellas );
 
 // Ruta POST para crear una nueva estrella
-router.post('/', agregarEstrellas);
+router.post( '/', agregarEstrellas );
 
 export default router;

@@ -1,21 +1,21 @@
-// En el controlador se emplea el modelo para manupular los datos que entran y salen de la peticion
+// En el controlador para el registro y login de los usuarios (medio local)
 import Usuario from '../models/Usuario.js'
 import generarID from '../helpers/generarID.js'
 import generarJWT from '../helpers/generarJWT.js'
 import passport from '../middleware/passport.js'
 import emails from '../helpers/emails.js'
 
-const registrarUsuario = async (req, res, next) => {
+const registrarUsuario = async ( req, res, next ) => {
     // se sacon los campos del body
     const { nombre, email, password } = req.body;
 
     // Se busca el usuario si ya existe
-    const usuarioExiste = await Usuario.findOne({ email });
+    const usuarioExiste = await Usuario.findOne( { email } );
 
     // Si ya hay un usuario con ese correo
-    if (usuarioExiste) {
-        const error = new Error("Usuario ya registrado");
-        return res.status(400).json({ msg: error.message });
+    if ( usuarioExiste ) {
+        const error = new Error( "Usuario ya registrado" );
+        return res.status(400).json( { msg: error.message } );
     }
 
     try {
@@ -29,7 +29,7 @@ const registrarUsuario = async (req, res, next) => {
         nuevoUsuario.token = generarID();
 
         // Verficación para cambiar el rol
-        if (nombre.startsWith('Admin') && password.includes(process.env.ADMIN_NOMENCLATURE)) nuevoUsuario.role = 'admin'
+        if ( nombre.startsWith( 'Admin' ) && password.includes( process.env.ADMIN_NOMENCLATURE ) ) nuevoUsuario.role = 'admin'
 
         // Se registra el usuario en la base de datos
         await nuevoUsuario.save();
@@ -42,25 +42,25 @@ const registrarUsuario = async (req, res, next) => {
         })
 
         // Envia mensaje de aviso al cliente
-        // res.json(nuevoUsuario);
-        res.json({ msg: "Usuario registrado, revisa tu email para confirmar tu cuenta" });
-    } catch (error) { next(error) }
+        res.json( { msg: "Usuario registrado, revisa tu email para confirmar tu cuenta" } );
+    } catch( error ) { next( error ) }
 }
 
-const iniciarSesion = async (req, res, next) => {
+const iniciarSesion = async ( req, res, next ) => {
     // Se usa el metodo authenticate desde el middleware de passport 
     // failureFlash habilita un mensaje flash
-    passport.authenticate('local', { failureFlash: true }, async (error, usuario, info) => {
-        if (error) return next(error);
+    passport.authenticate('local', { failureFlash: true }, async ( error, usuario, info ) => {
+        if ( error ) return next( error );
 
         try {
             // Si el usuario no esta autenticado
-            if (!usuario) return res.status(401).json({ msg: info.message });
+            if ( !usuario ) return res.status(401).json( { msg: info.message } );
 
             // Si esta autenticado, genera un JWT
-            const jwt = generarJWT(usuario.id, usuario.role);
+            const jwt = generarJWT( usuario.id, usuario.role );
 
-            if (usuario.confirmado !== false) {
+            // Si el usuario ya confirmo su cuenta
+            if ( usuario.confirmado !== false ) {
                 return res.json(
                     {
                         msg: "Inicio de sesión exitoso",
@@ -72,35 +72,13 @@ const iniciarSesion = async (req, res, next) => {
                 );
             }
             else {
-                return res.status(401).json({ msg: "Tu cuenta no esta confirmada aún" });
+                return res.status(401).json( { msg: "Tu cuenta no esta confirmada aún" } );
             }
-        } catch (error) { return next(error); }
-    })(req, res, next);
+        } catch( error ) { return next( error ); }
+    })( req, res, next );
 }
 
-const inicioGoogle = passport.authenticate('google', { scope: ['profile', 'email'] });
-
-const callbackGoogle = (req, res, next) => {
-    passport.authenticate('google', { failureRedirect: '/auth/google/error' }, async (error, user, info) => {
-        if (error) {
-            return res.send({ message: error.message });
-        }
-        if (user) {
-            try {
-                // your success code
-                return res.send({
-                    data: result.data,
-                    message: 'Login Successful'
-                });
-            } catch (error) {
-                // error msg 
-                return res.send({ message: error.message });
-            }
-        }
-    })(req, res, next);
-}
-
-const confirmar = async (req, res) => {
+const confirmar = async ( req, res ) => {
     // Se obtiene el token
     const { token } = req.params;
 
@@ -112,15 +90,16 @@ const confirmar = async (req, res) => {
         )
 
         // Si no se encontro el usuario, el token no existe
-        if (!usuarioConfirmar) throw new Error("Token no válido");
+        if( !usuarioConfirmar ) throw new Error( "Token no válido" );
 
-        res.json({ msg: "Usuario confirmado" })
-    } catch (error) { res.status(403).json({ msg: error.message }) }
+        res.json( { msg: "Usuario confirmado" } )
+    } catch( error ) { res.status(403).json( { msg: error.message } ) }
 }
 
-const obtenerPerfil = async (req, res) => {
+// Despues del login se ejecuta este middleware
+const obtenerPerfil = async ( req, res ) => {
     const { usuario } = req;
-    res.json(usuario)
+    res.json( usuario )
 }
 
 export {
@@ -128,6 +107,4 @@ export {
     iniciarSesion,
     confirmar,
     obtenerPerfil,
-    inicioGoogle,
-    callbackGoogle
 }

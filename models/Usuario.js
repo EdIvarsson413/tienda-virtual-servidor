@@ -40,20 +40,20 @@ const usuarioSchema = mongoose.Schema(
 );
 
 // Antes de guardar el password comenzara a hashear la contraseña
-usuarioSchema.pre("save", async function(next){
+usuarioSchema.pre( "save" , async function( next ){
     if( !this.isModified( 'password' ) ){
         // Si el password no ha cambiado termina el proceso de hash antes de que lo haga
         next();
     }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    const salt = await bcrypt.genSalt( 10 );
+    this.password = await bcrypt.hash( this.password, salt );
 });
 
-usuarioSchema.methods.comprobarPassword = async function(passswordFormulario){
+usuarioSchema.methods.comprobarPassword = async function( passswordFormulario ){
     // bcrypt hashea un password que viene de un formualrio y lo compara con uno que ya lo esta
-    return await bcrypt.compare(passswordFormulario, this.password);
+    return await bcrypt.compare( passswordFormulario, this.password );
 }
 
 // Definimos el modelo
-const Usuario = mongoose.model("Usuario", usuarioSchema);
+const Usuario = mongoose.model( "Usuario", usuarioSchema );
 export default Usuario;

@@ -1,8 +1,12 @@
+// Este es un helper que implementa el SMPT de Mailtrap
+// solo recomienda usar este servidor para pruebas
 import nodemailer from 'nodemailer'
 
 export default async (datos) => {
+    // El ombre de usuario, su email y el token correspondiente son extraidos
     const { nombre, email, token } = datos;
 
+    // Credenciales que ofrece Mailrap que ofrece al usuario dueño del servidor 
     const transport = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: process.env.EMAIL_PORT,

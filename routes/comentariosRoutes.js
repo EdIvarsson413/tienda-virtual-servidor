@@ -3,9 +3,9 @@ import { agregarComentario, obtenerComentario } from '../controllers/comentarios
 const router = express.Router();
 
 // Ruta GET para obtener todos los comentarios
-router.get('/:libro', obtenerComentario);
+router.get( '/:libro', obtenerComentario );
 
 // Ruta POST para crear un nuevo comentario
-router.post('/', agregarComentario );
+router.post( '/', agregarComentario );
 
 export default router;

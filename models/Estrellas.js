@@ -20,6 +20,6 @@ const estrellasSchema = mongoose.Schema(
     }
 )
 
-const Estrellas = mongoose.model("Estrellas", estrellasSchema);
+const Estrellas = mongoose.model( "Estrellas", estrellasSchema );
 
 export default Estrellas;

@@ -1,4 +1,4 @@
-// Incio del servidor (presentación muy sencilla)
+// Incio del servidor (presentación sencilla de los libros en JSON)
 import express from "express"
 const router = express.Router();
 

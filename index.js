@@ -11,19 +11,6 @@ import comentariosRoutes from './routes/comentariosRoutes.js'
 // Inicio del servidor 
 const app = express();
 app.use(express.json());
-
-// Configuración de express-session
-// app.use(session({
-//     secret: 'palabrasecreta',
-//     resave: false,
-//     saveUninitialized: false
-// }));
-
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// dotenv busca las variables de entorno 
-// e inicia instancia de MongoDB (si no existe, se creara)
 dotenv.config();
 conectarDB();
 
@@ -41,15 +28,14 @@ const corsOptions = {
         }
     }
 }
-// app.use( cors( corsOptions ) );
-app.use(cors('*'))
+app.use( cors( corsOptions ) );
 
 // Routing
-app.use('/', inicio);
-app.use('/api/usuarios', authPassport);
-app.use('/api/libros', librosRoutes);
-app.use('/api/estrellas', estrellasRoutes);
-app.use('/api/comentarios', comentariosRoutes);
+app.use( '/', inicio );
+app.use( '/api/usuarios', authPassport );
+app.use( '/api/libros', librosRoutes );
+app.use( '/api/estrellas', estrellasRoutes );
+app.use( '/api/comentarios', comentariosRoutes );
 
 const port = process.env.PORT || 3000
 

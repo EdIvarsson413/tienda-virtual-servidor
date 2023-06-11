@@ -1,11 +1,9 @@
 import Libros from '../models/Libros.js'
-import Estrellas from '../models/Estrellas.js'
-import Comentarios from '../models/Comentarios.js'
 
 const agregarLibro = async (req, res) => {
     try {
-        const libroAlmacendo = await Libros.create(req.body);
-        res.json(libroAlmacendo);
+        await Libros.create(req.body);
+        res.json({ msg: "Libro agregado correctamente" });
     } catch (error) {
         console.log(error)
     }
@@ -44,7 +42,6 @@ const obtenerLibroId = async (req, res) => {
     const { id } = req.params;
 
     try {
-
         // Se hace la consulta 
         const libroExiste = await Libros.findById(id)
             .select('_id nombre saga autor sinopsis precio imagen tipo');
@@ -91,8 +88,10 @@ const editarLibro = async (req, res) => {
         const libroEditado = await Libros.updateOne({_id: id}, objetoBody);
 
         // Si no hubieron cambios puede significar que el libro existe
-        if( libroEditado.modifiedCount > 0 ) res.status(200).json({ msg: "Libro editado con exito" });
-        else res.status(404).json({ msg: "Libro no encontrado" });
+        if( libroEditado.modifiedCount > 0 ) 
+            res.status(200).json({ msg: "Libro editado con exito" });
+        else 
+            res.status(404).json({ msg: "Libro no encontrado" });
 
     } catch (error) {
         console.log(error);
