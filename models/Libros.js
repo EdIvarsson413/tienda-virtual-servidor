@@ -1,38 +1,43 @@
 import mongoose from 'mongoose'
 
+// Estructura de un libro
 const librosSchema = mongoose.Schema(
     {
         nombre: {
             type: String,
             trim: true,
-            require: true,
+            required: true,
         },
         saga: {
             type: String,
             trim: true,
-            require: true,
+            required: true,
         },
         autor: {
             type: String,
             trim: true,
-            require: true
+            required: true
         },
         sinopsis: {
-            type: String,
+            type: String, // MongoDB por defecto da soporte a cadenas bastante largas
             trim: true,
-            require: true,
+            required: true,
         },
         precio: {
             type: Number,
-            require: true,
+            required: true,
         },
         imagen: {
-            type: String,
-            require: true,
+            type: String, // De la imagen se guarda alguna referencia de esta(como el nombre)
+            required: true,
         },
         tipo: {
+            type: String, // Tipo se refiere si el libro es un boxset o un libro individual
+            required: true
+        },
+        tokenPromo: {
             type: String,
-            require: true
+            required: false
         }
     },
     {

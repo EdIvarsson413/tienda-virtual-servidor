@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 
 const estrellasSchema = mongoose.Schema(
     {
+        // Nombre del cliente
         nombre: {
             type: String,
             require: true,
@@ -10,6 +11,7 @@ const estrellasSchema = mongoose.Schema(
             type: Number,
             require: true,
         },
+        // Nombre del libro
         libro: {
             type: String,
             require: true

@@ -50,10 +50,10 @@ usuarioSchema.pre( "save" , async function( next ){
 });
 
 usuarioSchema.methods.comprobarPassword = async function( passswordFormulario ){
-    // bcrypt hashea un password que viene de un formualrio y lo compara con uno que ya lo esta
+    // bcrypt hashea un password que viene de un formualrio y lo compara con uno que ya lo está
     return await bcrypt.compare( passswordFormulario, this.password );
 }
 
-// Definimos el modelo
+// Se define el modelo
 const Usuario = mongoose.model( "Usuario", usuarioSchema );
 export default Usuario;

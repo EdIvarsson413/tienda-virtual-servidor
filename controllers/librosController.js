@@ -6,6 +6,7 @@ const agregarLibro = async (req, res) => {
         res.json({ msg: "Libro agregado correctamente" });
     } catch (error) {
         console.log(error)
+        res.status( 500 ).json({ msg: "Error en el servidor" })
     }
 }
 
@@ -36,7 +37,7 @@ const obtenerLibro = async (req, res) => {
     }
 }
 
-// Obtener libro por id, traer sus comentarios y estrellas
+// Obtener libro por id
 const obtenerLibroId = async (req, res) => {
     // Se trae el id del libro de la url
     const { id } = req.params;
@@ -44,7 +45,7 @@ const obtenerLibroId = async (req, res) => {
     try {
         // Se hace la consulta 
         const libroExiste = await Libros.findById(id)
-            .select('_id nombre saga autor sinopsis precio imagen tipo');
+            .select('_id nombre saga autor sinopsis precio imagen tipo tokenPromo');
 
         // Si no encontro el libro
         if (!libroExiste) {
@@ -55,7 +56,7 @@ const obtenerLibroId = async (req, res) => {
         res.json(libroExiste);
     } catch (error) {
         console.log(error)
-        return res.status(500).json({ msg: "Libro no encontrado" });
+        return res.status(500).json({ msg: "Error en el servidor" });
     }
 }
 
