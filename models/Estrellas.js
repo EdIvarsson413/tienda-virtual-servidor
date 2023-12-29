@@ -5,16 +5,16 @@ const estrellasSchema = mongoose.Schema(
         // Nombre del cliente
         nombre: {
             type: String,
-            require: true,
+            required: true,
         },
         estrellas: {
             type: Number,
-            require: true,
+            required: true,
         },
         // Nombre del libro
         libro: {
             type: String,
-            require: true
+            required: true
         }
     },
     {

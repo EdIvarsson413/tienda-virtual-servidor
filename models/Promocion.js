@@ -5,19 +5,27 @@ const promocionSchema = mongoose.Schema(
     {
         codigo: {
             type: String,
-            require: true
+            required: true
         },
         descuento: {
             type: Number,
-            require: true
+            required: true
         },
         fechaLimite:{
             type: Number,
-            require: true
+            required: true
         },
         tokenPromo: {
             type: String,
-            require: true
+            required: true
+        },
+        nombreLibro: {
+            type: String,
+            required: true
+        },
+        portadaLibro: {
+            type: String,
+            required: true
         }
     },
     {

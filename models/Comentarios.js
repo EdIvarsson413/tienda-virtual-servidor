@@ -4,15 +4,15 @@ const comentariosSchema = mongoose.Schema(
     {
         nombre: {
             type: String,
-            require: true
+            required: true
         },
         comentario: {
             type: String,
-            require: true,
+            required: true,
         },
         libro: {
             type: String,
-            require: true,
+            required: true,
         },
     },
     {

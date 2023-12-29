@@ -9,6 +9,7 @@ import librosRoutes from './routes/librosRoutes.js'
 import estrellasRoutes from './routes/estrellasRoutes.js'
 import comentariosRoutes from './routes/comentariosRoutes.js'
 import promocionRoutes from './routes/promocionRoutes.js'
+import compraRoutes from './routes/compraRoutes.js'
 import tags from './helpers/swagger/tags.js'
 import schemas from './helpers/swagger/schemas.js'
 
@@ -66,10 +67,58 @@ app.use( '/api/libros', librosRoutes );
 app.use( '/api/estrellas', estrellasRoutes );
 app.use( '/api/comentarios', comentariosRoutes );
 app.use( '/api/promociones', promocionRoutes);
+app.use( '/api/compra/', compraRoutes );
 
 const port = process.env.PORT || 3000
 
-app.listen(port, () => {
+const servidor = app.listen(port, () => {
     console.log(`Servidor corriendo`);
     console.log(`Visitar http://localhost:${port}/api-docs para ir a la documentación`);
+})
+
+// Socket.io
+import { Server } from 'socket.io'
+import desglosarPromo from './helpers/desglosarPromo.js'
+import buscarLibro from './helpers/buscarLibro.js'
+
+// Construir el web socket a base de este servidor
+const io = new Server( servidor, {
+    pingTimeout: 60000,
+    cors: {
+        origin: process.env.FRONTEND_URL,
+    }
+})
+
+// Abrir conexion
+io.on('connection', socket => {
+    // -------- Eventos de socket.io -------- //
+
+    // Promociones
+    socket.on('cargando promociones', (cadena) => {
+        socket.join('admin-promos')
+    })
+
+    socket.on('nueva promocion', async (promocion) => {
+        // Desglosar cadena y hacer grupo de cupones
+        const promo = await desglosarPromo( promocion )
+
+        io.sockets.to('admin-promos').emit('agregar promocion', promo)
+    })
+
+    socket.on('eliminar promocion', tokenPromo => {
+        io.sockets.to('admin-promos').emit('eliminando promocion', tokenPromo)
+    })
+
+
+    // Libros
+    socket.on('cargando libros', cadena => {
+        socket.join('admin-libros')
+    })
+
+    socket.on('nuevo libro', async ( libro ) => {
+        // Buscar y traer los datos del libro de la BD
+        const libroRetornar = await buscarLibro( libro )
+
+        io.sockets.to('admin-libros').emit('libro agregado', libroRetornar)
+    })
 })

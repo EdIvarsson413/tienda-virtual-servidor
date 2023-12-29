@@ -102,5 +102,39 @@ export default {
             }
         },
         required: ["nombre", "email", "password"]
-    }
+    },
+    ComentariosEditarRequest: {
+        type: 'object',
+        properties: {
+            id: {
+                type: 'string',
+                description: 'Id del comentario.',
+            },
+            comentario: {
+                type: 'string',
+                description: 'Contenido del comentario.',
+            },
+            libro: {
+                type: 'string',
+                description: 'Nombre del libro al que se refiere el comentario.',
+            },
+        }
+    },
+    CompraRequest: {
+        type: 'object',
+        properties: {
+            id_cliente: {
+                type: 'string',
+                description: 'Id del cliente'
+            },
+            nombre_cliente: {
+                type: 'string',
+                description: 'Nombre del cliente'
+            },
+            libros: {
+                type: 'array',
+                description: 'Lista de libros a pedir'
+            }
+        }
+    },
 }

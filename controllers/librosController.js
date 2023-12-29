@@ -21,7 +21,7 @@ const obtenerLibro = async (req, res) => {
 
         // Se hace la consulta a base del regex
         const libroExiste = await Libros.findOne({ nombre: regex })
-            .select('_id nombre saga autor sinopsis precio imagen tipo');
+            .select('_id nombre saga autor sinopsis precio imagen tipo tokenPromo');
 
         // Si no encontro el libro
         if (!libroExiste) {
@@ -66,7 +66,7 @@ const obtenerLibros = async (req, res) => {
         // Con find se obtienen los libros
         const catalogo = await Libros.find()
             // se obtiene los atrbitos que fueron definidos en el modelo
-            .select('_id nombre saga autor sinopsis precio imagen tipo');
+            .select('_id nombre saga autor sinopsis precio imagen tipo tokenPromo');
 
         // Envia el catalogo a un JSON
         res.json(catalogo)

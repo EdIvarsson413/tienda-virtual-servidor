@@ -40,7 +40,45 @@ const agregarComentario = async ( req, res ) => {
     }
 }
 
+const editarComentario = async (req, res) => {
+    // Extraer ID del comentario
+    const { id } = req.params;
+
+    try {
+        // Obtener documento del comentario
+        const comentario = await Comentarios.findById( id );
+
+        // Si ya no existe mandará un mensaje de error
+        if( !comentario ) {
+            return res.status( 404 ).json({ msg: 'Comentario no encontrado' });
+        }
+
+        // Si lo encuentra, lo modifica y manda una confirmacion al usuario
+        comentario.comentario = req.body.comentario; 
+        await comentario.save();
+
+        res.json({ msg: 'Comentario editado correctamente' })
+    } catch (error) {
+        res.status( 500 ).json({ msg: 'Error en el servidor' })
+    }
+}
+
+const eliminarComentario = async (req, res) => {
+    // Extraer id del comentario
+    const { id } = req.params
+
+    try {
+        // Buscar comentario y eliminarlo
+        const comentario = await Comentarios.deleteOne({_id: id});
+        res.json({ msg: 'Comentario eliminado' })
+    } catch (error) {
+        res.status( 500 ).json({ msg: 'Error en el servidor' })
+    }
+}
+
 export {
     obtenerComentario,
     agregarComentario,
+    editarComentario,
+    eliminarComentario
 }

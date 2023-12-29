@@ -86,7 +86,7 @@ router.post( '/aplicar', checkAuth ,aplicarPromocion )
 
 /**
  * @swagger
- * /promociones/{concatenacion}:
+ * /promociones/:
  *    post:
  *      summary: Crear promoción
  *      tags: 
@@ -102,7 +102,7 @@ router.post( '/aplicar', checkAuth ,aplicarPromocion )
  *        200-2:
  *          description: Promocion creada, un cupón ha sido creado
  */
-router.post( '/:concatenacion', checkAuth, checkRole, crearPromocion );
+router.post( '/', checkAuth, checkRole, crearPromocion );
 
 /**
  * @swagger

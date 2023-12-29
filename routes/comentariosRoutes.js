@@ -1,5 +1,10 @@
 import express from 'express'
-import { agregarComentario, obtenerComentario } from '../controllers/comentariosController.js';
+import { 
+    agregarComentario, 
+    obtenerComentario,
+    editarComentario,
+    eliminarComentario
+} from '../controllers/comentariosController.js';
 const router = express.Router();
 
 /**
@@ -44,5 +49,50 @@ router.get( '/:libro', obtenerComentario );
  *         description: Error en el servidor al crear el comentario.
  */
 router.post( '/', agregarComentario );
+
+
+/**
+ * @swagger
+ * /comentarios/{id}:
+ *   put:
+ *     summary: Editar un comentario por id.
+ *     tags:
+ *       - Comentarios
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del comentario
+ *         type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ComentariosEditarRequest'
+ *     responses:
+ *       200:
+ *         description: Comentario editado correctamente
+ *       404:
+ *         description: Comentario no encontrado
+ *       500:
+ *         description: Error en el servidor
+*   delete:
+ *      summary: Eliminar un comentario.
+ *      tags:
+ *        - Comentarios
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          required: true
+ *          description: ID del comentario.
+ *          type: string
+ *      responses:
+ *        200:
+ *          description: Comentario eliminado correctamente.
+ */
+router.route( '/:id' )
+    .put( editarComentario )
+    .delete( eliminarComentario )
 
 export default router;
